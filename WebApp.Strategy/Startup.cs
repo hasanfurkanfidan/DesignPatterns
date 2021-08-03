@@ -1,5 +1,4 @@
 using BaseProject.DataAccess;
-using BaseProject.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApp.Strategy.Entities;
 
 namespace BaseProject
 {
