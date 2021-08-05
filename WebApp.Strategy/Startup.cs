@@ -1,6 +1,7 @@
 using BaseProject.DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApp.Strategy.Entities;
+using WebApp.Strategy.Models;
+using WebApp.Strategy.Repositories;
 
 namespace BaseProject
 {
@@ -27,6 +30,25 @@ namespace BaseProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IProductRepository>(sp =>
+            {
+                var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
+                var dbContext = sp.GetRequiredService<Context>();
+                var claim = httpContextAccessor.HttpContext.User.Claims.Where(p => p.Type == Settings.ClaimDatabaseType).FirstOrDefault();
+                if (claim == null)
+                {
+                    return new ProductRepositoryFromSqlServer(dbContext);
+                }
+                var databaseType = (EDatabaseType)int.Parse(claim.Value);
+                switch (databaseType)
+                {
+                    case EDatabaseType.SQLServer:
+                        return new ProductRepositoryFromSqlServer(dbContext);
+                    case EDatabaseType.Mongo:
+                        return new ProductRepositoryFromMongoDb(Configuration);
+                }
+                return new ProductRepositoryFromSqlServer(dbContext);
+            });
             services.AddDbContext<Context>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("SqlServer"));

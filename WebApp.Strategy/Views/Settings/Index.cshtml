@@ -1,0 +1,12 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using WebApp.Strategy.Models
+@model WebApp.Strategy.Models.Settings
+
+<form asp-action="ChangeDatabase" asp-controller="Settings" method="post">
+    <select asp-for="DatabaseType" asp-items="Html.GetEnumSelectList<EDatabaseType>()"></select>
+    <button type="submit">Güncelle</button>
+</form>

@@ -9,9 +9,11 @@ using BaseProject.DataAccess;
 using WebApp.Strategy.Entities;
 using WebApp.Strategy.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Strategy.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly IProductRepository _productRepository;
