@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace WebApp.Template.UserCards
@@ -9,7 +10,8 @@ namespace WebApp.Template.UserCards
     {
         protected override string SetFooter()
         {
-            throw new NotImplementedException();
+
+            return string.Empty;
         }
         protected override string SetPicture()
         {
