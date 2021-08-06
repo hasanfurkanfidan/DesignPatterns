@@ -9,5 +9,6 @@ namespace WebApp.Template.Entities
     public class AppUser:IdentityUser
     {
         public string ImageAdress { get; set; }
+        public string Description { get; set; }
     }
 }
