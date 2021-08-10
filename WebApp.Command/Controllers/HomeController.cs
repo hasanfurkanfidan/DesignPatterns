@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApp.Command.Commands;
+using WebApp.Command.Entities;
 
 namespace BaseProject.Controllers
 {
@@ -34,7 +36,30 @@ namespace BaseProject.Controllers
         {
             return View();
         }
+        public async Task<IActionResult>CreateFile(int type)
+        {
+            var products = await _context.Products.ToListAsync();
 
+
+
+            FileCreateInvoker fileCreateInvoker = new();
+
+            EFileType eFileType = (EFileType)type;
+
+            switch (eFileType)
+            {
+                case EFileType.Excel:
+                    var excelFile = new ExcelFile<Product>(products);
+                    fileCreateInvoker.SetCommand(new CreateExcelTableActionCommand<Product>(excelFile));
+                    break;
+                case EFileType.Pdf:
+                    var pdfFile = new PdfFile<Product>(products, HttpContext);
+                    fileCreateInvoker.SetCommand(new CreatePdfFileActionCommand<Product>(pdfFile));
+                    break;
+                
+            }
+            return fileCreateInvoker.CreateFile();
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
