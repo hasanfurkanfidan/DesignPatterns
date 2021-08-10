@@ -7,7 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,7 +47,16 @@ namespace BaseProject
                     Email = "user3.job@gmail.com"
                 }, "Password12*").Wait();
             }
-
+            Enumerable.Range(1, 30).ToList().ForEach(x =>
+            {
+                identityDbContext.Products.Add(new WebApp.Command.Entities.Product
+                {
+                    Name = $"Product{x}",
+                    Stock = x + 50,
+                    Price = x * 100
+                });
+            });
+            identityDbContext.SaveChanges();
             host.Run();
         }
 

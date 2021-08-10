@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApp.Command.Entities;
 
 namespace BaseProject.DataAccess
 {
@@ -14,5 +15,7 @@ namespace BaseProject.DataAccess
         {
 
         }
+        public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }
